@@ -32,7 +32,7 @@ public class ExchangeServiceImpl implements ExchangeServices {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-	        ExchangeCredentials credentials = new WebCredentials("dangelis", "02Set?06", "europe");
+	        ExchangeCredentials credentials = new WebCredentials("", "", "europe");
 	        service.setCredentials(credentials);
 	       
 	    }	
