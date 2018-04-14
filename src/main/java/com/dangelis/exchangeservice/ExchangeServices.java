@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface ExchangeServices {
 
-	public List<Appointment> getAllAppointmentsByEmailByDay(String email);
+	public List<Appointment> getAllAppointmentsByEmailByDay(String email) throws Exception;
 }

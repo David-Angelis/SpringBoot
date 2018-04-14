@@ -10,7 +10,7 @@ import java.time.ZoneId;
 /**
  * Created by Altran on 18/04/13.
  */
-public class Appointment  {
+public class Appointment implements Comparable {
 
     private String _subject;
     private String _body;
@@ -67,4 +67,20 @@ public class Appointment  {
         this._dateStart=appointment.getStart().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
         this._dateEnd=appointment.getStart().toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
     }
+
+	
+
+	@Override
+	public int compareTo(Object o) {
+		
+		Appointment a=(Appointment)o;
+		if(this._dateStart.isBefore(a._dateStart)) {
+			return -1;
+		}
+		if(this._dateStart.isAfter(a._dateStart)) {
+			return 1;
+		}else {
+			return 0;
+		}
+	}
 }

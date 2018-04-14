@@ -15,7 +15,7 @@ public class MeetRoomDisplayService  {
 	  @Autowired
 	    ExchangeServiceImpl exchangeService;
 	  
-	  public List<Appointment> getAllAppointmentsByEmail(String email) {
+	  public List<Appointment> getAllAppointmentsByEmail(String email) throws Exception {
 		 return exchangeService.getAllAppointmentsByEmailByDay(email);
 			
 		}
