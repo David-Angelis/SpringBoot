@@ -1,7 +1,7 @@
-package com.dangelis.Entity;
+package com.dangelis.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.databind.JsonSerializable;
+
 import microsoft.exchange.webservices.data.core.exception.service.local.ServiceLocalException;
 
 import java.time.LocalDateTime;
@@ -10,7 +10,7 @@ import java.time.ZoneId;
 /**
  * Created by Altran on 18/04/13.
  */
-public class Appointment implements Comparable {
+public class Appointment implements Comparable<Appointment> {
 
     private String _subject;
     private String _body;
@@ -71,13 +71,13 @@ public class Appointment implements Comparable {
 	
 
 	@Override
-	public int compareTo(Object o) {
+	public int compareTo(Appointment o) {
 		
-		Appointment a=(Appointment)o;
-		if(this._dateStart.isBefore(a._dateStart)) {
+		
+		if(this._dateStart.isBefore(o._dateStart)) {
 			return -1;
 		}
-		if(this._dateStart.isAfter(a._dateStart)) {
+		if(this._dateStart.isAfter(o._dateStart)) {
 			return 1;
 		}else {
 			return 0;

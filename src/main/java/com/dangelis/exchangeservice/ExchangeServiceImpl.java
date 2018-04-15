@@ -2,7 +2,6 @@ package com.dangelis.exchangeservice;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
@@ -10,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.dangelis.Entity.Appointment;
 import microsoft.exchange.webservices.data.core.PropertySet;
 import microsoft.exchange.webservices.data.core.enumeration.property.BasePropertySet;
 import microsoft.exchange.webservices.data.core.enumeration.property.BodyType;
@@ -21,8 +19,10 @@ import microsoft.exchange.webservices.data.property.complex.Mailbox;
 import microsoft.exchange.webservices.data.search.CalendarView;
 import microsoft.exchange.webservices.data.search.FindItemsResults;
 
-import org.joda.time.LocalDate;
 import org.springframework.stereotype.Repository;
+
+import com.dangelis.entity.Appointment;
+import com.dangelis.exchangeservice.exception.AppointmentException;
 
 import microsoft.exchange.webservices.data.core.ExchangeService;
 import microsoft.exchange.webservices.data.core.enumeration.misc.ExchangeVersion;
@@ -48,7 +48,7 @@ public class ExchangeServiceImpl implements ExchangeServices {
             try {
 				service.setUrl(new URI("https://mail.altran.com/EWS/"));
 			} catch (URISyntaxException e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 	        ExchangeCredentials credentials = new WebCredentials("", "", "europe");
@@ -56,7 +56,7 @@ public class ExchangeServiceImpl implements ExchangeServices {
 	       
 	    }	
 
-	public List<Appointment> getAllAppointmentsByEmailByDay(String email) throws Exception {
+	public List<Appointment> getAllAppointmentsByEmailByDay(String email) throws AppointmentException {
 		List<Appointment>list=new ArrayList<Appointment>();
 		EmailAddress emAddr = new EmailAddress(email);
 		Date d1 = new Date();
@@ -67,16 +67,22 @@ public class ExchangeServiceImpl implements ExchangeServices {
 		PropertySet prop = new PropertySet();
 		cView.setPropertySet(prop);
 		FolderId folderId = new FolderId(WellKnownFolderName.Calendar, new Mailbox(emAddr.getAddress()));
-		FindItemsResults<microsoft.exchange.webservices.data.core.service.item.Appointment> findResults = service.findAppointments(folderId, cView);
-		ArrayList<microsoft.exchange.webservices.data.core.service.item.Appointment> calItem = findResults.getItems();
-		PropertySet itemPropertySet = new PropertySet(BasePropertySet.FirstClassProperties);
-		itemPropertySet.setRequestedBodyType(BodyType.Text);
-		int numItems = findResults.getTotalCount();
-		for (int i=0;i<numItems;i++) {
-			microsoft.exchange.webservices.data.core.service.item.Appointment Details = microsoft.exchange.webservices.data.core.service.item.Appointment.bind(service, calItem.get(i).getId(),itemPropertySet);
-			Appointment appointment=new Appointment(Details);
-			list.add(appointment);
+		FindItemsResults<microsoft.exchange.webservices.data.core.service.item.Appointment> findResults;
+		try {
+			findResults = service.findAppointments(folderId, cView);
+			ArrayList<microsoft.exchange.webservices.data.core.service.item.Appointment> calItem = findResults.getItems();
+			PropertySet itemPropertySet = new PropertySet(BasePropertySet.FirstClassProperties);
+			itemPropertySet.setRequestedBodyType(BodyType.Text);
+			int numItems = findResults.getTotalCount();
+			for (int i=0;i<numItems;i++) {
+				microsoft.exchange.webservices.data.core.service.item.Appointment Details = microsoft.exchange.webservices.data.core.service.item.Appointment.bind(service, calItem.get(i).getId(),itemPropertySet);
+				Appointment appointment=new Appointment(Details);
+				list.add(appointment);
+			}
+		} catch (Exception e) {
+			throw new AppointmentException();
 		}
+		
 		return list;
 		
 	}

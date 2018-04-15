@@ -1,10 +1,11 @@
-package com.dangelis.Service;
+package com.dangelis.service;
 
-import com.dangelis.Entity.Appointment;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.dangelis.entity.Appointment;
 import com.dangelis.exchangeservice.ExchangeServiceImpl;
+import com.dangelis.exchangeservice.exception.AppointmentException;
 
 import java.util.List;
 
@@ -15,7 +16,7 @@ public class MeetRoomDisplayService  {
 	  @Autowired
 	    ExchangeServiceImpl exchangeService;
 	  
-	  public List<Appointment> getAllAppointmentsByEmail(String email) throws Exception {
+	  public List<Appointment> getAllAppointmentsByEmail(String email) throws AppointmentException {
 		 return exchangeService.getAllAppointmentsByEmailByDay(email);
 			
 		}
