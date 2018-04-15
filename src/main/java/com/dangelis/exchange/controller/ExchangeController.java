@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dangelis.entity.Appointment;
+import com.dangelis.service.MeetRoomDisplayService;
 
 
 
@@ -20,7 +22,7 @@ import com.dangelis.entity.Appointment;
 public class ExchangeController {
 
 	 @Autowired
-	  private com.dangelis.service.MeetRoomDisplayService service;
+	  private MeetRoomDisplayService service;
 	 
 	  @RequestMapping(value="appointment",method = RequestMethod.GET,produces="application/json")
 	 public List<Appointment> getAllAppointmentsByEmail(@RequestParam("email") String email) {
