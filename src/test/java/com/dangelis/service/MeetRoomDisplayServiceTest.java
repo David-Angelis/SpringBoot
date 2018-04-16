@@ -15,6 +15,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import com.dangelis.entity.Appointment;
+import com.dangelis.entity.Room;
 import com.dangelis.exchangeservice.ExchangeServiceImpl;
 import com.dangelis.exchangeservice.exception.AppointmentException;
 
@@ -39,10 +40,10 @@ public class MeetRoomDisplayServiceTest extends EasyMockSupport {
 	@Test
 	public void test01() throws AppointmentException {
 		Whitebox.setInternalState(intance, "exchangeService", serviceMock);
-		EasyMock.expect(serviceMock.getAllAppointmentsByEmailByDay("123")).andReturn(new ArrayList<Appointment>());
+		EasyMock.expect(serviceMock.getAllAppointmentsByEmailByDay("123","123","123")).andReturn(new ArrayList<Appointment>());
 		PowerMock.replayAll();
-		List<Appointment>result=intance.getAllAppointmentsByEmail("123");
-		Assert.assertEquals(new ArrayList<Appointment>().isEmpty(), result.isEmpty());
+		Room result=intance.getAllAppointmentsByEmail("123","123","123");
+		Assert.assertEquals(new ArrayList<Appointment>().isEmpty(), result.getList().isEmpty());
 		PowerMock.verifyAll();
 	}
 	

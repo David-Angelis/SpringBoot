@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.dangelis.entity.Appointment;
+import com.dangelis.entity.Room;
 import com.dangelis.service.MeetRoomDisplayService;
 
 
@@ -25,12 +26,12 @@ public class ExchangeController {
 	  private MeetRoomDisplayService service;
 	 
 	  @RequestMapping(value="appointment",method = RequestMethod.GET,produces="application/json")
-	 public List<Appointment> getAllAppointmentsByEmail(@RequestParam("email") String email) {
+	 public Room getAllAppointmentsByEmail(@RequestParam("email") String email,@RequestParam("dateIni") String dateIni,@RequestParam("dateFinal") String dateFinal) {
 		  try {
-			  return service.getAllAppointmentsByEmail(email);
+			  return service.getAllAppointmentsByEmail(email,dateIni,dateFinal);
 		  }catch(Exception e) {
 			  //log
-			  return new ArrayList<Appointment>();
+			  return null;
 		  }
 		 
 		}

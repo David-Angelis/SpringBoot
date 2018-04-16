@@ -15,6 +15,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 import com.dangelis.entity.Appointment;
+import com.dangelis.entity.Room;
 import com.dangelis.exchangeservice.ExchangeServiceImpl;
 import com.dangelis.exchangeservice.exception.AppointmentException;
 import com.dangelis.service.MeetRoomDisplayService;
@@ -44,11 +45,11 @@ public class ExchangeControllerTest extends EasyMockSupport {
 		List<Appointment>list=new ArrayList<Appointment>();
 		list.add(new Appointment());
 		
-		EasyMock.expect(serviceMock.getAllAppointmentsByEmail("123")).andReturn(list);
+		EasyMock.expect(serviceMock.getAllAppointmentsByEmail("123","123","123")).andReturn(new Room("123","123",new ArrayList<Appointment>()));
 		PowerMock.replayAll();
-		List<Appointment>result=intance.getAllAppointmentsByEmail("123");
+		Room result=intance.getAllAppointmentsByEmail("123","123","123");
 		PowerMock.verifyAll();
-		Assert.assertEquals(1, result.size());
+		Assert.assertEquals(1, result.getList().size());
 	}
 	
 	@Test
@@ -57,11 +58,11 @@ public class ExchangeControllerTest extends EasyMockSupport {
 		List<Appointment>list=new ArrayList<Appointment>();
 		list.add(new Appointment());
 		
-		EasyMock.expect(serviceMock.getAllAppointmentsByEmail("123")).andThrow(new AppointmentException());
+		EasyMock.expect(serviceMock.getAllAppointmentsByEmail("123","123","123")).andThrow(new AppointmentException());
 		PowerMock.replayAll();
-		List<Appointment>result=intance.getAllAppointmentsByEmail("123");
+		Room result=intance.getAllAppointmentsByEmail("123","123","123");
 		PowerMock.verifyAll();
-		Assert.assertEquals(0, result.size());
+		Assert.assertEquals(0, result.getList().size());
 	}
 
 }

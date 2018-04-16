@@ -7,5 +7,5 @@ import com.dangelis.exchangeservice.exception.AppointmentException;
 
 public interface ExchangeServices {
 
-	public List<Appointment> getAllAppointmentsByEmailByDay(String email) throws AppointmentException;
+	public List<Appointment> getAllAppointmentsByEmailByDay(String email,String dateIni,String dateFinal) throws AppointmentException;
 }
