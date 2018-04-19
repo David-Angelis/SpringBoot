@@ -44,7 +44,7 @@ public class ExchangeServiceImpl implements ExchangeServices {
 
 			e.printStackTrace();
 		}
-		ExchangeCredentials credentials = new WebCredentials("dangelis", "02Set?06", "europe");
+		ExchangeCredentials credentials = new WebCredentials("dangelis", "", "e");
 		service.setCredentials(credentials);
 	}
 	 
