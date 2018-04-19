@@ -71,7 +71,7 @@ public class ExchangeServiceImpl implements ExchangeServices {
 
 			e.printStackTrace();
 		}
-		ExchangeCredentials credentials = new WebCredentials("dangelis", "", "europe");
+		ExchangeCredentials credentials = new WebCredentials("dangelis", "", "");
 		service.setCredentials(credentials);
 	    	List<Appointment>list=new ArrayList<Appointment>();
 		EmailAddress emAddr = new EmailAddress(email);
