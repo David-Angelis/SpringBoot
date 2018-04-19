@@ -2,6 +2,8 @@ package com.dangelis.exchangeservice;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
@@ -32,7 +34,19 @@ import microsoft.exchange.webservices.data.credential.WebCredentials;
 public class ExchangeServiceImpl implements ExchangeServices {
 	
 	private static ExchangeServiceImpl exchangeImpl;
-	private ExchangeService service;
+	private static ExchangeService service;
+	static {
+		service = new ExchangeService(ExchangeVersion.Exchange2010_SP2);
+		try {
+			System.setProperty("javax.net.ssl.trustStore","C:\\Program Files\\Java\\jdk1.8.0_111\\jre\\lib\\security\\cacerts");
+			service.setUrl(new URI("https://mail.altran.com/EWS/Exchange.asmx"));
+		} catch (URISyntaxException e) {
+
+			e.printStackTrace();
+		}
+		ExchangeCredentials credentials = new WebCredentials("dangelis", "02Set?06", "europe");
+		service.setCredentials(credentials);
+	}
 	 
 	 public static ExchangeServiceImpl getInstance() {
 		 return exchangeImpl;
@@ -44,25 +58,31 @@ public class ExchangeServiceImpl implements ExchangeServices {
 	 * @throws URISyntaxException 
 	     */
 	    public ExchangeServiceImpl(){
-	    	service = new ExchangeService(ExchangeVersion.Exchange2007_SP1);
-            try {
-				service.setUrl(new URI("https://mail.altran.com/EWS/"));
-			} catch (URISyntaxException e) {
-				
-				e.printStackTrace();
-			}
-	        ExchangeCredentials credentials = new WebCredentials("", "", "europe");
-	        service.setCredentials(credentials);
+
 	       
 	    }	
 
-	public List<Appointment> getAllAppointmentsByEmailByDay(String email) throws AppointmentException {
-		List<Appointment>list=new ArrayList<Appointment>();
+	public List<Appointment> getAllAppointmentsByEmailByDay(String email,String dateIni,String dateFinal) throws AppointmentException, ParseException {
+		service = new ExchangeService(ExchangeVersion.Exchange2007_SP1);
+		try {
+			System.setProperty("javax.net.ssl.trustStore","C:\\Program Files\\Java\\jdk1.8.0_111\\jre\\lib\\security\\cacerts");
+			service.setUrl(new URI("https://mail.altran.com/EWS/Exchange.asmx"));
+		} catch (URISyntaxException e) {
+
+			e.printStackTrace();
+		}
+		ExchangeCredentials credentials = new WebCredentials("dangelis", "02Set?06", "europe");
+		service.setCredentials(credentials);
+	    	List<Appointment>list=new ArrayList<Appointment>();
 		EmailAddress emAddr = new EmailAddress(email);
-		Date d1 = new Date();
-		Date d2=new Date();		
-		d1=atStartOfDay(d1);
-		d2 = atEndOfDay(d2);
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-ddHH:mm:ss");
+
+		String td1 = "2018-04-16 00:00:00";
+		String td2 = "2018-04-16 23:59:00";
+		Date d1 = format.parse( dateIni);
+
+		Date d2 =format.parse( dateFinal);
+
 		CalendarView cView = new CalendarView(d1,d2);
 		PropertySet prop = new PropertySet();
 		cView.setPropertySet(prop);

@@ -1,8 +1,10 @@
 package com.dangelis.exchange.controller;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.dangelis.entity.Room;
 import org.easymock.EasyMock;
 import org.easymock.EasyMockSupport;
 import org.easymock.Mock;
@@ -39,29 +41,30 @@ public class ExchangeControllerTest extends EasyMockSupport {
 	}
 	
 	@Test
-	public void test001() throws AppointmentException {
+	public void test001() throws AppointmentException, ParseException {
 		Whitebox.setInternalState(intance, "service", serviceMock);
 		List<Appointment>list=new ArrayList<Appointment>();
 		list.add(new Appointment());
 		
-		EasyMock.expect(serviceMock.getAllAppointmentsByEmail("123")).andReturn(list);
+		EasyMock.expect(serviceMock.getAllAppointmentsByEmail("123","123","123")).andReturn(list);
 		PowerMock.replayAll();
-		List<Appointment>result=intance.getAllAppointmentsByEmail("123");
+		Room result=intance.getAllAppointmentsByEmail("123","123","123");
 		PowerMock.verifyAll();
-		Assert.assertEquals(1, result.size());
+		Assert.assertEquals(1, result.getList().size());
 	}
 	
 	@Test
-	public void test002() throws AppointmentException{
+	public void test002() throws AppointmentException, ParseException {
 		Whitebox.setInternalState(intance, "service", serviceMock);
 		List<Appointment>list=new ArrayList<Appointment>();
 		list.add(new Appointment());
 		
-		EasyMock.expect(serviceMock.getAllAppointmentsByEmail("123")).andThrow(new AppointmentException());
+		EasyMock.expect(serviceMock.getAllAppointmentsByEmail("123","123","123")).andThrow(new AppointmentException());
 		PowerMock.replayAll();
-		List<Appointment>result=intance.getAllAppointmentsByEmail("123");
+		Room result;
+		result = intance.getAllAppointmentsByEmail("123","123","123");
 		PowerMock.verifyAll();
-		Assert.assertEquals(0, result.size());
+		Assert.assertEquals(0, result.getList().size());
 	}
 
 }

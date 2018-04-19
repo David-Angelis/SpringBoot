@@ -7,6 +7,7 @@ import com.dangelis.entity.Appointment;
 import com.dangelis.exchangeservice.ExchangeServiceImpl;
 import com.dangelis.exchangeservice.exception.AppointmentException;
 
+import java.text.ParseException;
 import java.util.List;
 
 
@@ -16,8 +17,8 @@ public class MeetRoomDisplayService  {
 	  @Autowired
 	    ExchangeServiceImpl exchangeService;
 	  
-	  public List<Appointment> getAllAppointmentsByEmail(String email) throws AppointmentException {
-		 return exchangeService.getAllAppointmentsByEmailByDay(email);
+	  public List<Appointment> getAllAppointmentsByEmail(String email,String dateIni,String dateFinal) throws AppointmentException, ParseException {
+		 return exchangeService.getAllAppointmentsByEmailByDay(email,dateIni,dateFinal);
 			
 		}
 }

@@ -3,6 +3,7 @@ package com.dangelis.exchange.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.dangelis.entity.Room;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,12 +26,13 @@ public class ExchangeController {
 	  private MeetRoomDisplayService service;
 	 
 	  @RequestMapping(value="appointment",method = RequestMethod.GET,produces="application/json")
-	 public List<Appointment> getAllAppointmentsByEmail(@RequestParam("email") String email) {
+	 public Room getAllAppointmentsByEmail(@RequestParam("email") String email, @RequestParam("dateInit") String dateIni, @RequestParam("dateFinal") String dateFinal) {
 		  try {
-			  return service.getAllAppointmentsByEmail(email);
+              Room room =new Room(email.replaceAll("@altran.com",""),email,service.getAllAppointmentsByEmail(email,dateIni,dateFinal));
+			  return room;
 		  }catch(Exception e) {
 			  //log
-			  return new ArrayList<Appointment>();
+			  return null;
 		  }
 		 
 		}

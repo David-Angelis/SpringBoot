@@ -1,5 +1,6 @@
 package com.dangelis.service;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,11 +38,11 @@ public class MeetRoomDisplayServiceTest extends EasyMockSupport {
 	ExchangeServiceImpl serviceMock;
 	
 	@Test
-	public void test01() throws AppointmentException {
+	public void test01() throws AppointmentException, ParseException {
 		Whitebox.setInternalState(intance, "exchangeService", serviceMock);
-		EasyMock.expect(serviceMock.getAllAppointmentsByEmailByDay("123")).andReturn(new ArrayList<Appointment>());
+		EasyMock.expect(serviceMock.getAllAppointmentsByEmailByDay("123","123","123")).andReturn(new ArrayList<Appointment>());
 		PowerMock.replayAll();
-		List<Appointment>result=intance.getAllAppointmentsByEmail("123");
+		List<Appointment>result=intance.getAllAppointmentsByEmail("123","123","123");
 		Assert.assertEquals(new ArrayList<Appointment>().isEmpty(), result.isEmpty());
 		PowerMock.verifyAll();
 	}
